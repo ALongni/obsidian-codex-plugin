@@ -1,9 +1,10 @@
 {
-	"id": "obsidian-codex-plugin",
-	"name": "Codex Terminal",
-	"version": "1.1.0",
-	"minAppVersion": "0.15.0",
-	"description": "Open a split command-line pane inside Obsidian on desktop.",
-	"author": "alongni",
-	"isDesktopOnly": true
+ "id": "obsidian-codex-plugin",
+ "name": "Codex Terminal",
+ "version": "1.1.0",
+ "minAppVersion": "0.15.0",
+ "description": "Open a split command-line pane inside Obsidian on desktop.",
+ "author": "alongni",
+ "isDesktopOnly": true,
+ "authorUrl": "https://github.com/ALongni/obsidian-codex-plugin"
 }

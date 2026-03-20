@@ -78,6 +78,8 @@ Use either of these entry points:
 - Click the terminal icon in the left ribbon.
 - Run **Open terminal pane** from the command palette.
 
+![点击按钮](pictures/点击按钮.png)
+
 The plugin opens a split pane and starts the terminal in this order:
 
 1. The custom startup directory from plugin settings, if set.
@@ -87,6 +89,8 @@ The plugin opens a split pane and starts the terminal in this order:
 ### Run codex
 
 The terminal background is initialized from the current Obsidian background color each time the pane opens.
+
+![打开codex](pictures/打开codex.png)
 
 Inside the terminal pane you can:
 

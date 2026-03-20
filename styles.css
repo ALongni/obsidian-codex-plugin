@@ -306,10 +306,16 @@
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 8px;
 	overflow: hidden;
-	background: #000;
+	background: var(--codex-terminal-bg, var(--background-primary));
 }
 
 .codex-terminal-host .xterm {
 	height: 100%;
 	padding: 12px;
+	background: var(--codex-terminal-bg, var(--background-primary));
+}
+
+.codex-terminal-host .xterm .xterm-viewport,
+.codex-terminal-host .xterm .composition-view {
+	background: var(--codex-terminal-bg, var(--background-primary));
 }

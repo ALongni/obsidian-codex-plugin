@@ -9,6 +9,7 @@ It is designed to run interactive CLI tools, including `codex`, without leaving 
 - Launch the terminal in the current note folder by default.
 - Start `codex` directly from the terminal toolbar.
 - Resize the pane and keep the terminal session interactive.
+- Match the terminal background to the current Obsidian theme when the pane opens.
 - Override the shell path or startup directory in plugin settings.
 
 ## Requirements
@@ -85,6 +86,8 @@ The plugin opens a split pane and starts the terminal in this order:
 
 ### Run codex
 
+The terminal background is initialized from the current Obsidian background color each time the pane opens.
+
 Inside the terminal pane you can:
 
 - Click **Run codex** to execute `codex` immediately.
@@ -104,6 +107,7 @@ Available settings:
 ## Notes
 
 - This plugin is desktop-only.
+- Reopen the terminal pane after switching themes if you want the background color to refresh immediately.
 - Interactive terminal programs depend on tools installed on your machine.
 - If `codex` is not found, install it first and make sure Obsidian can see it in `PATH`.
 

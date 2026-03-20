@@ -76,6 +76,9 @@ export class CodexTerminalView extends ItemView {
 			return;
 		}
 
+		const theme = this.getTerminalTheme();
+		this.terminalHostEl.style.setProperty("--codex-terminal-bg", theme.background);
+
 		this.fitAddon = new FitAddon();
 		this.terminal = new Terminal({
 			cursorBlink: true,
@@ -83,12 +86,7 @@ export class CodexTerminalView extends ItemView {
 			fontFamily: "var(--font-monospace)",
 			fontSize: 13,
 			lineHeight: 1.3,
-			theme: {
-				background: "#000000",
-				foreground: "#e6edf3",
-				cursor: "#e6edf3",
-				selectionBackground: "#264f78",
-			},
+			theme,
 		});
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.open(this.terminalHostEl);
@@ -102,6 +100,30 @@ export class CodexTerminalView extends ItemView {
 			this.fitTerminal();
 		});
 		this.resizeObserver.observe(this.terminalHostEl);
+	}
+
+	private getTerminalTheme(): {
+		background: string;
+		foreground: string;
+		cursor: string;
+		selectionBackground: string;
+	} {
+		const styles = getComputedStyle(document.body);
+		const background = this.readThemeColor(styles, "--background-primary", styles.backgroundColor || "rgb(0, 0, 0)");
+		const foreground = this.readThemeColor(styles, "--text-normal", "rgb(230, 237, 243)");
+		const selectionBackground = this.readThemeColor(styles, "--background-modifier-hover", "rgba(38, 79, 120, 0.55)");
+
+		return {
+			background,
+			foreground,
+			cursor: foreground,
+			selectionBackground,
+		};
+	}
+
+	private readThemeColor(styles: CSSStyleDeclaration, variableName: string, fallback: string): string {
+		const value = styles.getPropertyValue(variableName).trim();
+		return value.length > 0 ? value : fallback;
 	}
 
 	private startSession(): void {

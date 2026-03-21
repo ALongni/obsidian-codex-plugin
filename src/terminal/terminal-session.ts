@@ -6,6 +6,7 @@ export interface TerminalSessionOptions {
 	cwd: string;
 	cols: number;
 	rows: number;
+	environment?: Record<string, string>;
 	onOutput: (text: string) => void;
 	onExit: (code: number | null) => void;
 }
@@ -31,15 +32,23 @@ export class TerminalSession {
 			return;
 		}
 
-		this.process = spawn("python3", [
-			this.options.bridgeScriptPath,
-			this.options.shellPath,
-			this.options.cwd,
-			String(this.options.cols),
-			String(this.options.rows),
-		], {
-			stdio: "pipe",
-		});
+		this.process = spawn(
+			"python3",
+			[
+				this.options.bridgeScriptPath,
+				this.options.shellPath,
+				this.options.cwd,
+				String(this.options.cols),
+				String(this.options.rows),
+			],
+			{
+				stdio: "pipe",
+				env: {
+					...process.env,
+					...(this.options.environment ?? {}),
+				},
+			},
+		);
 
 		this.process.stdout.setEncoding("utf8");
 		this.process.stderr.setEncoding("utf8");
@@ -131,8 +140,6 @@ export class TerminalSession {
 
 		if (message.type === "output" && typeof message.data === "string") {
 			this.options.onOutput(Buffer.from(message.data, "base64").toString("utf8"));
-			return;
 		}
-
 	}
 }

@@ -126,6 +126,25 @@ export class CodexTerminalView extends ItemView {
 		return value.length > 0 ? value : fallback;
 	}
 
+	private getSessionEnvironment(): Record<string, string> {
+		const environment: Record<string, string> = {};
+		this.addEnvironmentVariable(environment, "HTTP_PROXY", this.plugin.settings.httpProxy);
+		this.addEnvironmentVariable(environment, "HTTPS_PROXY", this.plugin.settings.httpsProxy);
+		this.addEnvironmentVariable(environment, "ALL_PROXY", this.plugin.settings.allProxy);
+		this.addEnvironmentVariable(environment, "NO_PROXY", this.plugin.settings.noProxy);
+		return environment;
+	}
+
+	private addEnvironmentVariable(environment: Record<string, string>, key: string, value: string): void {
+		const trimmedValue = value.trim();
+		if (trimmedValue.length === 0) {
+			return;
+		}
+
+		environment[key] = trimmedValue;
+		environment[key.toLowerCase()] = trimmedValue;
+	}
+
 	private startSession(): void {
 		const cwd = this.resolveStartupDirectory();
 		const dims = this.getTerminalDimensions();
@@ -135,6 +154,7 @@ export class CodexTerminalView extends ItemView {
 			cwd,
 			cols: dims.cols,
 			rows: dims.rows,
+			environment: this.getSessionEnvironment(),
 			onOutput: (text) => this.terminal?.write(text),
 			onExit: (code) => {
 				this.terminal?.write(`\r\n[terminal] Shell exited${code === null ? "" : ` with code ${code}`}.\r\n`);

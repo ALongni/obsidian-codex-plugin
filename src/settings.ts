@@ -4,11 +4,19 @@ import CodexTerminalPlugin from "./main";
 export interface CodexTerminalSettings {
 	shellPath: string;
 	startupDirectory: string;
+	httpProxy: string;
+	httpsProxy: string;
+	allProxy: string;
+	noProxy: string;
 }
 
 export const DEFAULT_SETTINGS: CodexTerminalSettings = {
 	shellPath: "/bin/bash",
 	startupDirectory: "",
+	httpProxy: "",
+	httpsProxy: "",
+	allProxy: "",
+	noProxy: "",
 };
 
 export class CodexTerminalSettingTab extends PluginSettingTab {
@@ -47,6 +55,36 @@ export class CodexTerminalSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.startupDirectory)
 					.onChange(async (value) => {
 						this.plugin.settings.startupDirectory = value.trim();
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		containerEl.createEl("h3", { text: "Proxy" });
+		containerEl.createEl("p", {
+			text: "These values are injected into the terminal session environment for tools like codex.",
+		});
+
+		this.addProxySetting(containerEl, "HTTP_PROXY", "httpProxy", "http://127.0.0.1:7890");
+		this.addProxySetting(containerEl, "HTTPS_PROXY", "httpsProxy", "http://127.0.0.1:7890");
+		this.addProxySetting(containerEl, "ALL_PROXY", "allProxy", "socks5://127.0.0.1:7890");
+		this.addProxySetting(containerEl, "NO_PROXY", "noProxy", "localhost,127.0.0.1");
+	}
+
+	private addProxySetting(
+		containerEl: HTMLElement,
+		label: string,
+		key: keyof Pick<CodexTerminalSettings, "httpProxy" | "httpsProxy" | "allProxy" | "noProxy">,
+		placeholder: string,
+	): void {
+		new Setting(containerEl)
+			.setName(label)
+			.setDesc(`Optional environment variable passed to the terminal session as ${label} and ${label.toLowerCase()}.`)
+			.addText((text) =>
+				text
+					.setPlaceholder(placeholder)
+					.setValue(this.plugin.settings[key])
+					.onChange(async (value) => {
+						this.plugin.settings[key] = value.trim();
 						await this.plugin.saveSettings();
 					}),
 			);

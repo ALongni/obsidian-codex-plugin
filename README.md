@@ -11,6 +11,7 @@ It is designed to run interactive CLI tools, including `codex`, without leaving 
 - Resize the pane and keep the terminal session interactive.
 - Match the terminal background to the current Obsidian theme when the pane opens.
 - Override the shell path or startup directory in plugin settings.
+- Configure proxy environment variables for terminal tools like codex.
 
 ## Requirements
 
@@ -18,6 +19,7 @@ It is designed to run interactive CLI tools, including `codex`, without leaving 
 - `python3` available in your system `PATH`.
 - A shell such as `/bin/bash`.
 - `codex` installed and available in `PATH` if you want to run it from the terminal.
+- If OpenAI access requires a proxy in your network, prepare the corresponding proxy address and port.
 
 ## Install
 
@@ -107,6 +109,7 @@ Available settings:
 
 - `Shell path`: the shell executable used to create the terminal session.
 - `Startup directory`: optional fixed working directory. Leave empty to follow the current note folder.
+- `HTTP_PROXY` / `HTTPS_PROXY` / `ALL_PROXY` / `NO_PROXY`: optional proxy environment variables injected into the terminal session.
 
 ## Notes
 
@@ -114,6 +117,7 @@ Available settings:
 - Reopen the terminal pane after switching themes if you want the background color to refresh immediately.
 - Interactive terminal programs depend on tools installed on your machine.
 - If `codex` is not found, install it first and make sure Obsidian can see it in `PATH`.
+- If `codex` cannot reach OpenAI from the embedded terminal, configure the proxy settings in the plugin and reopen the terminal pane.
 
 ## Development
 
